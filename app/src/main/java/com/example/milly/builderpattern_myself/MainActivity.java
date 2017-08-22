@@ -2,14 +2,18 @@ package com.example.milly.builderpattern_myself;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import com.example.milly.builderpattern_myself.strategy.AverageContext;
+import com.example.milly.builderpattern_myself.strategy.PreHospitalAverageStrategy;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private Button mStrategy;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,19 +21,20 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        initViews();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //    .setAction("Action", null)
-                //    .show();
-                //StoreBuilder storeBuilder = new StoreBuilder();
-                //BigStore bigStore = storeBuilder.prepareStoreProduct();
-                //bigStore.showItems();
-                Products product = checkProductBuilder();
+
+               Products product = checkProductBuilder();
 
             }
         });
+    }
+
+    private void initViews() {
+        mStrategy = (Button)findViewById(R.id.strategy);
     }
 
     private Products checkProductBuilder() {
@@ -58,5 +63,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override public void onClick(View v) {
+        if(v.getId() == R.id.strategy){
+
+            //pass the strategy you want to use , and then will show the result of the choose strategy
+            AverageContext averageContext = new AverageContext(new PreHospitalAverageStrategy());
+            averageContext.calculateResult();
+        }
     }
 }
